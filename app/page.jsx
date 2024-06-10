@@ -1,45 +1,59 @@
-import Link from 'next/link';
-import { Card } from 'components/card';
-import { RandomQuote } from 'components/random-quote';
-import { Markdown } from 'components/markdown';
-import { ContextAlert } from 'components/context-alert';
-import { getNetlifyContext } from 'utils';
+import { useState } from 'react';
 
-const cards = [
-    //{ text: 'Hello', linkText: 'someLink', href: '/' }
-];
+// Components for each section of the notes
+const ComputerSystem = () => (
+  <div>
+    <h1>Computer System</h1>
+    <p>An overview of computer architecture, including the main components such as the CPU, memory, and I/O devices.</p>
+  </div>
+);
 
-const contextExplainer = `
-The card below is rendered on the server based on the value of \`process.env.CONTEXT\` 
-([docs](https://docs.netlify.com/configure-builds/environment-variables/#build-metadata)):
-`;
+const HardwareAndMotherboardParts = () => (
+  <div>
+    <h2>Hardware and Motherboard Parts</h2>
+    <p>A detailed breakdown of hardware components and the functions and connectivity of motherboard parts.</p>
+  </div>
+);
 
-const preDynamicContentExplainer = `
-The card content below is fetched by the client-side from \`/quotes/random\` (see file \`app/quotes/random/route.js\`) with a different quote shown on each page load:
-`;
+const ComputerPorts = () => (
+  <div>
+    <h2>Computer Ports</h2>
+    <p>Exploration of the types of ports and their uses, along with data transfer protocols.</p>
+  </div>
+);
 
-const postDynamicContentExplainer = `
-On Netlify, Next.js Route Handlers are automatically deployed as [Serverless Functions](https://docs.netlify.com/functions/overview/).
-Alternatively, you can add Serverless Functions to any site regardless of framework, with acccess to the [full context data](https://docs.netlify.com/functions/api/).
+const BusOrganization = () => (
+  <div>
+    <h2>External & Internal Bus Organization</h2>
+    <p>Insight into bus architecture and its role in communication, including different types of bus systems and standards.</p>
+  </div>
+);
 
-And as always with dynamic content, beware of layout shifts & flicker! (here, we aren't...)
-`;
+const FutureOfComputing = () => (
+  <div>
+    <h2>Future of Computing</h2>
+    <p>Discussion on emerging technologies and trends, along with predictions for the evolution of computing systems.</p>
+  </div>
+);
 
-const ctx = getNetlifyContext();
+// Main page component that renders the notes
+export default function NotesPage() {
+  // State to manage the display of different sections
+  const [showSection, setShowSection] = useState({
+    computerSystem: true,
+    hardwareParts: false,
+    computerPorts: false,
+    busOrganization: false,
+    futureComputing: false,
+  });
 
-export default function Page() {
-    return (
-        <main className="flex flex-col gap-8 sm:gap-16">
-            {/* !!cards?.length && <CardsGrid cards={cards} /> */}
-        </main>
-    );
-}
-
-function RuntimeContextCard() {
-    const title = `Netlify Context: running in ${ctx} mode.`;
-    if (ctx === 'dev') {
-        return <Card title={title} text="Next.js will rebuild any page you navigate to, including static pages." />;
-    } else {
-        return <Card title={title} text="This page was statically-generated at build time." />;
-    }
+  return (
+    <main className="flex flex-col gap-8 sm:gap-16">
+      {showSection.computerSystem && <ComputerSystem />}
+      {showSection.hardwareParts && <HardwareAndMotherboardParts />}
+      {showSection.computerPorts && <ComputerPorts />}
+      {showSection.busOrganization && <BusOrganization />}
+      {showSection.futureComputing && <FutureOfComputing />}
+    </main>
+  );
 }
